@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.local/
+backups/
+logs/
+sources/
+frappe_docker/
+__pycache__/
+*.py[cod]
+
+# Local demo material, machine-specific state, and generated handoff archive.
+client-demo/
+INSTALLATION-STATUS.md
+frappe.code-workspace
+alhorani-frappe-source.zip

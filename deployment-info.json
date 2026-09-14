@@ -1,0 +1,14 @@
+{
+  "project": "alhorani-frappe",
+  "site": "frappe.localhost",
+  "url": "http://localhost:8080",
+  "image": "alhorani-frappe:2026-09-14-helpdesk",
+  "image_digest": "sha256:bb4d799e8e750cf5467a9b219619974914760bbbac0323a3403710be71ddd999",
+  "deployment_commit": "a0c52135d4d41c4b8acf7adfdfc5bbcba46dd4d0",
+  "python": "Python 3.14.7",
+  "node": "v24.21.0",
+  "bench": "5.31.0",
+  "recorded_at": "2026-09-14T17:54:20.840793+00:00",
+  "verified_project": "alhorani-frappe-helpdesk-check",
+  "validation": "fresh site installation with all eight applications"
+}

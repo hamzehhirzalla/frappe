@@ -1,0 +1,52 @@
+[
+  {
+    "app": "frappe",
+    "tag": "v16.33.1",
+    "commit": "988e54f3c4c291e2077a83809663f123731abe76",
+    "url": "https://github.com/frappe/frappe"
+  },
+  {
+    "app": "erpnext",
+    "tag": "v16.34.2",
+    "commit": "4048fb70e14d1843956fcdabb7c3cca75a1cbcdd",
+    "url": "https://github.com/frappe/erpnext"
+  },
+  {
+    "app": "hrms",
+    "tag": "v16.18.1",
+    "commit": "a4768b441cff346def505e27f2a2229ee1e05b9b",
+    "url": "https://github.com/frappe/hrms"
+  },
+  {
+    "app": "crm",
+    "tag": "v1.83.0",
+    "commit": "52c500d6bdac3cd51553f95cfae9c7a940d99f1a",
+    "url": "https://github.com/frappe/crm"
+  },
+  {
+    "app": "lending",
+    "tag": "v16.5.0",
+    "commit": "06fc075ae062ce38ac38a763f7f290da4ddd6fdb",
+    "url": "https://github.com/frappe/lending"
+  },
+  {
+    "app": "insights",
+    "tag": "v3.13.2",
+    "commit": "b7bf01ad60d5ae45a9863e81ab89c24785adfade",
+    "url": "https://github.com/frappe/insights"
+  },
+  {
+    "app": "telephony",
+    "tag": null,
+    "branch": "develop",
+    "version": "0.0.1",
+    "commit": "039cf39f245d6818ead03cf94eea6ce7f9c1e1f7",
+    "url": "https://github.com/frappe/telephony"
+  },
+  {
+    "app": "helpdesk",
+    "tag": "v1.30.1",
+    "commit": "1c3361cc0019deec6f84035a9352270b4e4eb5cb",
+    "url": "https://github.com/frappe/helpdesk"
+  }
+]
