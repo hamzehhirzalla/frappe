@@ -37,16 +37,18 @@ Allow an hour or more for the first installation; download and build times vary.
 All command blocks below use **Windows PowerShell**. Run one block at a time.
 If a command fails, resolve it before continuing.
 
-## 2. Install WSL 2
+## 2. Install WSL 2 and Ubuntu Linux
 
 Open Start, search for **Windows PowerShell**, right-click it, and choose
 **Run as administrator**. Run:
 
 ```powershell
-wsl --install --no-distribution
+wsl --install
 ```
 
-Restart Windows when it completes. Open an administrator PowerShell again:
+This installs WSL 2 and Ubuntu Linux. Restart Windows when it completes, then
+open **Ubuntu** from Start and follow the prompts to create your Linux username
+and password. Open an administrator PowerShell again:
 
 ```powershell
 wsl --update
@@ -54,10 +56,8 @@ wsl --set-default-version 2
 wsl --version
 ```
 
-The version command should display WSL and kernel versions. The
-`--no-distribution` option installs WSL without installing Ubuntu. This project
-uses Docker Desktop's Linux environment, so a separate Ubuntu installation is
-unnecessary. See [Microsoft's WSL command reference](https://learn.microsoft.com/en-us/windows/wsl/basic-commands).
+The version command should display WSL and kernel versions.
+See [Microsoft's WSL command reference](https://learn.microsoft.com/en-us/windows/wsl/basic-commands).
 
 If `--install` is not recognized, finish Windows updates and consult
 [Microsoft's WSL installation instructions](https://learn.microsoft.com/en-us/windows/wsl/install).
