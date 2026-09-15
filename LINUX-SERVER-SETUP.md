@@ -43,6 +43,8 @@ and encryption configuration.
 
 ## HTTPS with Cloudflare
 
+The HTTPS override requires Docker Compose 2.24.4 or newer.
+
 Create a proxied DNS A record pointing your hostname to the server. Full (strict)
 requires the origin to accept HTTPS on port 443 with a valid certificate that
 covers that hostname. A Cloudflare Origin CA certificate is suitable for this.
@@ -70,7 +72,12 @@ FRAPPE_BASE_URL=https://erp.example.com bash manage.sh Verify
 ```
 
 Use the actual hostname instead of `erp.example.com`. Once HTTPS works, select
-Full (strict) in Cloudflare. The existing port 80 endpoint remains available.
+Full (strict) in Cloudflare. The HTTPS override publishes only port 443 and removes
+the public HTTP mapping. Nginx still uses port 8080 inside its container for
+Frappe routing and health checks. Cloudflare Origin CA certificates do not need
+port 80 for HTTP certificate validation. To redirect visitors who use an HTTP
+URL, configure Cloudflare's Always Use HTTPS setting or a redirect rule for the
+hostname; otherwise those HTTP requests cannot reach the origin.
 Origin CA certificates are trusted by Cloudflare; direct browser connections to
 the origin do not trust them. Keep the DNS record proxied. Monitor the certificate
 expiry and replace its files before expiration, then restart the frontend.
@@ -80,7 +87,8 @@ HTTPS header, so Frappe marks session cookies `Secure`. Keep backend port 8000
 private to the Compose network.
 
 References: [Cloudflare Full (strict)](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict/)
-and [Origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/).
+and [Origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/),
+plus [Always Use HTTPS](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/).
 
 ## Replacing an existing Docker workload
 

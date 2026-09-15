@@ -6,7 +6,8 @@ services:
       # HTTPS header so Frappe generates secure cookies and correct URLs.
       FORWARDED_ALLOW_IPS: "*"
   frontend:
-    ports:
+    # Replace the HTTP mapping inherited from compose.noproxy.yaml.
+    ports: !override
       - ${HTTPS_PUBLISH_PORT:-443}:8443
     volumes:
       - ./nginx/https.conf:/etc/nginx/conf.d/https.conf:ro
