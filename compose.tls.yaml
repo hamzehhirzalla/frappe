@@ -1,0 +1,9 @@
+# Optional HTTPS entrypoint for an existing origin certificate.
+services:
+  frontend:
+    ports:
+      - ${HTTPS_PUBLISH_PORT:-443}:8443
+    volumes:
+      - ./nginx/https.conf:/etc/nginx/conf.d/https.conf:ro
+      - ${FRAPPE_TLS_CERT_FILE:?Set FRAPPE_TLS_CERT_FILE}:/etc/nginx/certs/fullchain.pem:ro
+      - ${FRAPPE_TLS_KEY_FILE:?Set FRAPPE_TLS_KEY_FILE}:/etc/nginx/certs/privkey.pem:ro

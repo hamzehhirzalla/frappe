@@ -17,6 +17,18 @@ compose=(docker compose --project-name "$project_name" --project-directory "$pro
   -f frappe_docker/overrides/compose.noproxy.yaml
   -f compose.local.yaml)
 
+# Opt into a server certificate without changing local HTTP installations.
+tls_enabled="${FRAPPE_TLS_ENABLED:-}"
+if [[ -z "$tls_enabled" && -f "$env_file" ]]; then
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%$'\r'}"
+    case "$line" in FRAPPE_TLS_ENABLED=*) tls_enabled="${line#*=}" ;; esac
+  done < "$env_file"
+fi
+if [[ "$tls_enabled" == 1 ]]; then
+  compose+=(-f compose.tls.yaml)
+fi
+
 case "${action,,}" in
   build)
     apps_hash="$(sha256sum apps.json | cut -d ' ' -f 1)"
@@ -29,7 +41,7 @@ case "${action,,}" in
       --tag alhorani-frappe:2026-09-14-helpdesk \
       --file frappe_docker/images/custom/Containerfile frappe_docker
     ;;
-  start) "${compose[@]}" up -d ;;
+  start) "${compose[@]}" up -d "$@" ;;
   stop) "${compose[@]}" stop ;;
   restart) "${compose[@]}" restart backend frontend websocket queue-short queue-long scheduler ;;
   status) "${compose[@]}" ps -a ;;

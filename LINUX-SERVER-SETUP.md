@@ -41,6 +41,43 @@ Log in as `Administrator` using the generated password and complete the company
 setup wizard. Run `bash manage.sh Backup` to export the database, attachments,
 and encryption configuration.
 
+## HTTPS with Cloudflare
+
+Create a proxied DNS A record pointing your hostname to the server. Full (strict)
+requires the origin to accept HTTPS on port 443 with a valid certificate that
+covers that hostname. A Cloudflare Origin CA certificate is suitable for this.
+
+Store the certificate and key outside the repository. The frontend runs as UID
+1000 and must be able to read both files; keep the private key mode `600` and its
+parent directory mode `700`. Add these settings to the server's private `.env`:
+
+```dotenv
+FRAPPE_TLS_ENABLED=1
+HTTPS_PUBLISH_PORT=443
+FRAPPE_TLS_CERT_FILE=/home/ubuntu/.local/share/frappe-tls/fullchain.pem
+FRAPPE_TLS_KEY_FILE=/home/ubuntu/.local/share/frappe-tls/privkey.pem
+FRAPPE_SITE_URL=https://erp.example.com
+```
+
+Allow TCP 443 through the host and cloud firewalls. Apply the frontend change and
+update an already-installed site's public URL:
+
+```bash
+bash manage.sh Start --no-deps frontend
+bash manage.sh Bench set-config host_name https://erp.example.com
+bash manage.sh Bench clear-cache
+FRAPPE_BASE_URL=https://erp.example.com bash manage.sh Verify
+```
+
+Use the actual hostname instead of `erp.example.com`. Once HTTPS works, select
+Full (strict) in Cloudflare. The existing port 80 endpoint remains available.
+Origin CA certificates are trusted by Cloudflare; direct browser connections to
+the origin do not trust them. Keep the DNS record proxied. Monitor the certificate
+expiry and replace its files before expiration, then restart the frontend.
+
+References: [Cloudflare Full (strict)](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict/)
+and [Origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/).
+
 ## Replacing an existing Docker workload
 
 Record the running container IDs and their Compose project names before stopping
