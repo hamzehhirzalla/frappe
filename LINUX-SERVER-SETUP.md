@@ -63,7 +63,7 @@ Allow TCP 443 through the host and cloud firewalls. Apply the frontend change an
 update an already-installed site's public URL:
 
 ```bash
-bash manage.sh Start --no-deps frontend
+bash manage.sh Start --no-deps backend frontend
 bash manage.sh Bench set-config host_name https://erp.example.com
 bash manage.sh Bench clear-cache
 FRAPPE_BASE_URL=https://erp.example.com bash manage.sh Verify
@@ -74,6 +74,10 @@ Full (strict) in Cloudflare. The existing port 80 endpoint remains available.
 Origin CA certificates are trusted by Cloudflare; direct browser connections to
 the origin do not trust them. Keep the DNS record proxied. Monitor the certificate
 expiry and replace its files before expiration, then restart the frontend.
+
+The HTTPS override also lets the internal Gunicorn service trust the frontend's
+HTTPS header, so Frappe marks session cookies `Secure`. Keep backend port 8000
+private to the Compose network.
 
 References: [Cloudflare Full (strict)](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict/)
 and [Origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/).

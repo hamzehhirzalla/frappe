@@ -18,6 +18,7 @@ config = dict(
 )
 cookies = http.cookiejar.CookieJar()
 client = build_opener(HTTPCookieProcessor(cookies))
+client.addheaders = [("User-Agent", "Alhorani-Frappe-Deployment-Check/1.0")]
 results = []
 
 
@@ -54,6 +55,10 @@ assert json.loads(body)["message"] == "Logged In"
 status, body, _, _ = fetch("/api/method/frappe.auth.get_logged_user")
 assert json.loads(body)["message"] == "Administrator"
 record("Administrator authentication")
+if urlparse(BASE).scheme == "https":
+    session_cookies = [cookie for cookie in cookies if cookie.name == "sid"]
+    assert session_cookies and all(cookie.secure for cookie in session_cookies), "HTTPS session cookie is missing Secure"
+    record("HTTPS session cookie security")
 
 for doctype in ["Company", "Employee", "Salary Slip", "CRM Lead", "Loan", "Insights Workbook", "Insights Data Source v3", "HD Ticket", "HD Team", "HD Agent", "TP Call Log"]:
     path = "/api/resource/" + quote(doctype) + "?" + urlencode({"limit_page_length": 1})

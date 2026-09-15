@@ -1,5 +1,10 @@
 # Optional HTTPS entrypoint for an existing origin certificate.
 services:
+  backend:
+    environment:
+      # Gunicorn is reachable only inside this Compose network. Trust Nginx's
+      # HTTPS header so Frappe generates secure cookies and correct URLs.
+      FORWARDED_ALLOW_IPS: "*"
   frontend:
     ports:
       - ${HTTPS_PUBLISH_PORT:-443}:8443
