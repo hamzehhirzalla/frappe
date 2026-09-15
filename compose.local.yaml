@@ -9,8 +9,10 @@ services:
     image: mariadb:11.8@sha256:2d2f4095530294735a857cfe22bb101e19b0849b416911c796ec4aa81b164a62
     logging: *local-logging
   configurator:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
   backend:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "--header", "Host: frappe.localhost", "http://localhost:8000/api/method/ping"]
@@ -19,6 +21,7 @@ services:
       retries: 5
       start_period: 120s
   frontend:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/api/method/ping"]
@@ -44,10 +47,14 @@ services:
       timeout: 5s
       retries: 5
   websocket:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
   queue-short:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
   queue-long:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging
   scheduler:
+    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/amd64}
     logging: *local-logging

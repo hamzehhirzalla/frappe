@@ -13,7 +13,7 @@ for app in erpnext hrms crm lending insights telephony helpdesk; do
   fi
 done
 bench --site "$site" migrate
-bench --site "$site" set-config host_name http://localhost:8080
+bench --site "$site" set-config host_name "${FRAPPE_SITE_URL:-http://localhost:8080}"
 bench --site "$site" enable-scheduler
 bench --site "$site" clear-cache
 bench --site "$site" list-apps

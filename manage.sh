@@ -5,6 +5,8 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 project_root="$PWD"
 project_name="${FRAPPE_PROJECT_NAME:-alhorani-frappe}"
 env_file="${FRAPPE_ENV_FILE:-$project_root/.env}"
+# Match the Docker daemon, including ARM64 Oracle instances.
+export DOCKER_DEFAULT_PLATFORM="${DOCKER_DEFAULT_PLATFORM:-$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')}"
 action="${1:-Status}"
 if (( $# )); then shift; fi
 compose=(docker compose --project-name "$project_name" --project-directory "$project_root"
@@ -18,7 +20,7 @@ compose=(docker compose --project-name "$project_name" --project-directory "$pro
 case "${action,,}" in
   build)
     apps_hash="$(sha256sum apps.json | cut -d ' ' -f 1)"
-    docker build --platform linux/amd64 --progress plain \
+    docker build --platform "$DOCKER_DEFAULT_PLATFORM" --progress plain \
       --build-arg FRAPPE_PATH=https://github.com/frappe/frappe \
       --build-arg FRAPPE_BRANCH=v16.33.1 \
       --build-arg PYTHON_VERSION=3.14 --build-arg NODE_VERSION=24 \
@@ -40,13 +42,14 @@ case "${action,,}" in
       case "$line" in
         DB_PASSWORD=*) export DB_PASSWORD="${line#*=}" ;;
         ADMIN_PASSWORD=*) export ADMIN_PASSWORD="${line#*=}" ;;
+        FRAPPE_SITE_URL=*) export FRAPPE_SITE_URL="${line#*=}" ;;
       esac
     done < "$env_file"
     : "${DB_PASSWORD:?DB_PASSWORD is missing from .env}"
     : "${ADMIN_PASSWORD:?ADMIN_PASSWORD is missing from .env}"
     trap 'unset DB_PASSWORD ADMIN_PASSWORD' EXIT
     "${compose[@]}" cp scripts/install-site.sh backend:/tmp/install-frappe-site.sh
-    "${compose[@]}" exec -T -e DB_PASSWORD -e ADMIN_PASSWORD backend bash /tmp/install-frappe-site.sh
+    "${compose[@]}" exec -T -e DB_PASSWORD -e ADMIN_PASSWORD -e FRAPPE_SITE_URL backend bash /tmp/install-frappe-site.sh
     "${compose[@]}" cp scripts/configure_site.py backend:/tmp/configure-frappe-site.py
     "${compose[@]}" exec -T backend env/bin/python /tmp/configure-frappe-site.py
     ;;
