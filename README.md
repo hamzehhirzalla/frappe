@@ -1,7 +1,8 @@
 # Al Horani Frappe - fresh installation
 
-**Start with [SETUP.md](SETUP.md).** It explains how to identify the server's
-Windows edition and choose the correct from-scratch installation guide.
+**Fresh Ubuntu:** start with [LINUX-SERVER-SETUP.md](LINUX-SERVER-SETUP.md) for
+step-by-step installation, from Docker to a working site and Cloudflare HTTPS.
+**Windows:** start with [SETUP.md](SETUP.md) to choose the guide for your edition.
 No existing Frappe installation, database, or old credentials are required.
 
 Helpdesk and its required Telephony dependency are included automatically in
@@ -31,7 +32,7 @@ that exact snapshot. The image tag is `alhorani-frappe:2026-09-14-helpdesk`.
 
 ## Installation guides
 
-- [Ubuntu / Oracle ARM64 server](LINUX-SERVER-SETUP.md)
+- [Fresh Ubuntu / Oracle ARM64: step-by-step installation](LINUX-SERVER-SETUP.md)
 - [Start here: identify Windows edition and transfer the files](SETUP.md)
 - [Windows 11: install WSL, Docker Desktop, and the project](SETUP-FROM-SCRATCH.md)
 - [Windows Server 2022/2025: install WSL Ubuntu and Docker Engine](WINDOWS-SERVER-SETUP.md)
@@ -70,7 +71,7 @@ The Telephony dependency is installed even when you only use support tickets.
 
 The default URL is accessible on the host machine. `localhost` on another
 computer refers to that other computer; it is not your server's address. The
-Windows Server guide includes an optional domain/HTTPS configuration.
+Ubuntu and Windows Server guides include optional domain/HTTPS configurations.
 
 ## Code, data, and daily use
 
